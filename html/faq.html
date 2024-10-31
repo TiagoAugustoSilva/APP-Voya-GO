@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Suporte/FAQ</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            display: flex;
+            margin: 0;
+        }
+        .sidebar {
+            width: 250px;
+            background-image: linear-gradient(#1c021d, #730b77, #260727);
+            color: white;
+            padding: 20px;
+        }
+        .content {
+            padding: 20px;
+            flex-grow: 1;
+        }
+        h1 {
+            margin-top: 0;
+        }
+        .faq {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+        }
+        .faq h3 {
+            margin: 0;
+            cursor: pointer;
+        }
+        .faq p {
+            display: none; /* Inicialmente escondido */
+            margin-top: 10px;
+        }
+        .faq.active p {
+            display: block; /* Exibe quando ativo */
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <img src="img/logo-Bag.png" alt="">
+        <ul>
+            <li><a href="dashboard.html">Viajar GPS</a> <i class="bi bi-geo-alt"></i></li>
+            <li><a href="explorar_destinos.html">Explorar Destinos</a> <i class="bi bi-map"></i></li>
+            <li><a href="dicas-viagem.html">Dicas de Viagem</a> <i class="bi bi-lightbulb"></i></li>
+            <li><a href="sos.html">Ligar Emergência Local</a> <i class="bi bi-telephone"></i></li>
+            <li><a href="faq.html">Suporte/FAQ</a> <i class="bi bi-question-circle"></i></li>
+            <li><a href="config.html">Configurações de conta</a> <i class="bi bi-gear"></i></li>
+            <li><a href="index.html">Sair</a> <i class="bi bi-box-arrow-right"></i></li>
+        </ul>
+    </div>
+    <div class="content">
+        <h1>Suporte/FAQ</h1>
+        <div class="faq">
+            <h3>1. Como posso me registrar no aplicativo?</h3>
+            <p>Para se registrar, clique no botão "Sign Up" na tela inicial e preencha o formulário com suas informações,e clique em inscreva-se</p>
+        </div>
+        <div class="faq">
+            <h3>2. O que fazer se eu esquecer minha senha?</h3>
+            <p>Clique no link "Esqueceu a senha?" na tela de login e siga as instruções para redefinir sua senha.</p>
+        </div>
+        <div class="faq">
+            <h3>3. Como posso entrar em contato com o suporte?</h3>
+            <p>Você pode entrar em contato conosco pelo e-mail suport@bugslife.com ou pelo telefone +55 15 98765-4321.</p>
+        </div>
+        <div class="faq">
+            <h3>4. O aplicativo funciona offline?</h3>
+            <p>Sim, você pode acessar algumas funcionalidades offline, mas para obter dados em tempo real, é necessário estar conectado à internet.</p>
+        </div>
+        <div class="faq">
+            <h3>5. Como posso cancelar minha conta?</h3>
+            <p>Para cancelar sua conta, desativar ou excluir basta ir até as configurações do APP e clicar em excluir ou desativar conta.</p>
+        </div>
+    </div>
+
+    <script>
+        // Script para expandir e contrair respostas das FAQs
+        const faqs = document.querySelectorAll('.faq h3');
+        faqs.forEach(faq => {
+            faq.addEventListener('click', () => {
+                faq.parentElement.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Explorar Destinos</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        /* Estilo básico */
+        body {
+            display: flex;
+            margin: 0;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-image: linear-gradient(#1c021d, #730b77, #260727);
+            color: white;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            margin-top: 0;
+        }
+
+        .content {
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        /* Estilos para os pontos turísticos */
+        #tourist-places {
+            margin-top: 20px;
+        }
+
+        .place {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+            /* Fundo branco para as caixas */
+            cursor: pointer;
+            /* Muda o cursor para indicar que é clicável */
+        }
+
+        .place:hover {
+            background-color: #f0f0f0;
+            /* Efeito ao passar o mouse */
+        }
+
+        /* Estilos para a paginação */
+        .pagination {
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #730b77;
+            color: white;
+            cursor: pointer;
+        }
+
+        .pagination button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <img src="img/logo-Bag.png" alt="">
+        <ul>
+            <li><a href="dashboard.html">Viajar GPS</a> <i class="bi bi-geo-alt"></i></li>
+            <li><a href="explorar_destinos.html">Explorar Destinos</a> <i class="bi bi-map"></i></li>
+            <li><a href="dicas_viagem.html">Dicas de Viagem</a> <i class="bi bi-lightbulb"></i></li>
+            <li><a href="sos.html">Ligar Emergência Local</a> <i class="bi bi-telephone"></i></li>
+            <li><a href="faq.html">Suporte/FAQ</a> <i class="bi bi-question-circle"></i></li>
+            <li><a href="config.html">Configurações de conta</a> <i class="bi bi-gear"></i></li>
+            <li><a href="index.html">Sair</a> <i class="bi bi-box-arrow-right"></i></li>
+        </ul>
+    </div>
+    <div class="content">
+        <h1>Pontos Turísticos Famosos</h1>
+        <div id="tourist-places"></div> <!-- Onde os pontos turísticos serão exibidos -->
+        <div class="pagination">
+            <button id="prev-btn" onclick="navegarPagina(-1)" disabled>Anterior</button>
+            <span id="page-info"></span>
+            <button id="next-btn" onclick="navegarPagina(1)">Próximo</button>
+        </div>
+    </div>
+
+    <script>
+        const lugares = [
+        { title: "Torre Eiffel", lat: 48.8584, lon: 2.2945 },
+                { title: "Coliseu", lat: 41.8902, lon: 12.4922 },
+                { title: "Toronto", lat: 43.6532, lon: -79.3832 },
+                { title: "Burj Khalifa", lat: 25.1972, lon: 55.2744 },
+                { title: "Estátua da Liberdade", lat: 40.6892, lon: -74.0445 },
+                { title: "Machu Picchu", lat: -13.1631, lon: -72.5450 },
+                { title: "Taj Mahal", lat: 27.1751, lon: 78.0421 },
+                { title: "Cristo Redentor", lat: -22.9519, lon: -43.2105 },
+                { title: "Piramides de Gizé", lat: 29.9753, lon: 31.1376 },
+                { title: "Kotel (Muro das Lamentações)", lat: 31.7767, lon: 35.2345 },
+                { title: "Grande Muralha da China", lat: 40.4319, lon: 116.5704 },
+                { title: "Sagrada Família", lat: 41.4036, lon: 2.1744 },
+                { title: "Torre de Londres", lat: 51.5081, lon: -0.0759 },
+                { title: "Stonehenge", lat: 51.1789, lon: -1.8262 },
+                { title: "Cataratas do Iguaçu", lat: -25.6953, lon: -54.4367 },
+                { title: "Palácio de Buckingham", lat: 51.5014, lon: -0.1419 },
+                { title: "Alhambra", lat: 37.7765, lon: -3.5881 },
+                { title: "Castelo de Neuschwanstein", lat: 47.5576, lon: 10.7491 },
+                { title: "Santorini", lat: 36.3932, lon: 25.4615 },
+                { title: "Cappadocia", lat: 38.6420, lon: 34.8289 },
+                { title: "Ponte Golden Gate", lat: 37.8199, lon: -122.4783 },
+                { title: "Ostern Railway Station", lat: -27.8589, lon: 25.2242 },
+                { title: "Catedral de Notre-Dame", lat: 48.8529, lon: 2.3500 },
+                { title: "Palácio de Versalhes", lat: 48.8049, lon: 2.1200 },
+                { title: "Catedral de São Basílio", lat: 55.7558, lon: 37.6173 },
+                { title: "Parque Nacional Torres del Paine", lat: -51.2603, lon: -72.3397 },
+                { title: "Castelo de Edimburgo", lat: 55.9486, lon: -3.1999 },
+                { title: "Torre de Pisa", lat: 43.7228, lon: 10.3966 },
+                { title: "Buda Castle", lat: 47.4969, lon: 19.0399 },
+                { title: "Oculus", lat: 40.7127, lon: -74.0134 },
+                { title: "Statue of Liberty", lat: 40.6892, lon: -74.0445 },
+                { title: "Catedral de São Pedro", lat: 41.9029, lon: 12.4534 },
+                { title: "Angkor Wat", lat: 13.4125, lon: 103.8662 },
+                { title: "Muralhas da Cidade de Dubrovnik", lat: 42.6265, lon: 18.1143 },
+                { title: "Fórum Romano", lat: 41.8925, lon: 12.4853 },
+                { title: "Templo de Luxor", lat: 25.6872, lon: 32.6396 },
+                { title: "Ponte de Rialto", lat: 45.4400, lon: 12.3346 },
+                { title: "Praça de São Marcos", lat: 45.4372, lon: 12.3355 },
+                { title: "Templo do Sol", lat: -13.1652, lon: -72.5449 },
+                { title: "Catedral de São Paulo", lat: 51.5113, lon: -0.1160 },
+                { title: "Praça de Tiananmen", lat: 39.9056, lon: 116.3972 },
+                { title: "Museu do Louvre", lat: 48.8606, lon: 2.3376 },
+                { title: "Catedral de Santiago", lat: -33.4489, lon: -70.6693 },
+                { title: "Templo de Karnak", lat: 25.7189, lon: 32.6554 },
+                { title: "Catedral de Sevilla", lat: 37.3886, lon: -5.9935 },
+                { title: "Basílica de São Francisco", lat: 37.7964, lon: -122.4269 },
+                { title: "Museu Britânico", lat: 51.5194, lon: -0.1270 },
+                { title: "Castelo de Warwick", lat: 52.2819, lon: -1.5861 },
+                { title: "Ouro Preto", lat: -20.3853, lon: -43.5026 },
+                { title: "Praça da Paz Celestial", lat: 39.5425, lon: 116.3860 }
+            ];
+
+        let pontosPorPagina = 5; // Número de pontos por página
+        let paginaAtual = 1;
+
+        function mostrarPontosTuristicos() {
+            const touristPlacesDiv = document.getElementById('tourist-places');
+            touristPlacesDiv.innerHTML = ''; // Limpa resultados anteriores
+
+            // Calcula o início e o fim dos lugares a serem exibidos
+            const inicio = (paginaAtual - 1) * pontosPorPagina;
+            const fim = inicio + pontosPorPagina;
+            const lugaresParaExibir = lugares.slice(inicio, fim);
+
+            lugaresParaExibir.forEach(l => {
+                const placeDiv = document.createElement('div');
+                placeDiv.className = 'place';
+                placeDiv.innerHTML = `<strong>${l.title}</strong><br>
+                                     Latitude: ${l.lat}, Longitude: ${l.lon}`;
+
+                // Adiciona um evento de clique que redireciona para o mapa
+                placeDiv.onclick = () => {
+                    window.location.href = `dashboard.html?lat=${l.lat}&lon=${l.lon}`;
+                };
+
+                touristPlacesDiv.appendChild(placeDiv);
+            });
+
+            // Atualiza informações da página
+            document.getElementById('page-info').textContent = `Página ${paginaAtual} de ${Math.ceil(lugares.length / pontosPorPagina)}`;
+            document.getElementById('prev-btn').disabled = paginaAtual === 1;
+            document.getElementById('next-btn').disabled = paginaAtual === Math.ceil(lugares.length / pontosPorPagina);
+        }
+
+        function navegarPagina(direcao) {
+            paginaAtual += direcao;
+            mostrarPontosTuristicos();
+        }
+
+        // Carregar os pontos turísticos ao carregar a página
+        window.onload = mostrarPontosTuristicos;
+    </script>
+</body>
+
+</html>

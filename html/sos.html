@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Ligar Emergência</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            display: flex;
+            margin: 0;
+        }
+        .sidebar {
+            width: 250px;
+            background-image: linear-gradient(#1c021d, #730b77, #260727);
+            color: white;
+            padding: 20px;
+        }
+        .content {
+            padding: 20px;
+            flex-grow: 1;
+        }
+        h1 {
+            margin-top: 0;
+        }
+        .emergency {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .emergency h3 {
+            margin: 0;
+        }
+        .emergency a {
+            color: #007bff; /* Cor do link */
+            text-decoration: none;
+        }
+        .emergency a:hover {
+            text-decoration: underline; /* Efeito ao passar o mouse */
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <img src="img/logo-Bag.png" alt="">
+        <ul>
+            <li><a href="dashboard.html">Viajar GPS</a> <i class="bi bi-geo-alt"></i></li>
+            <li><a href="explorar_destinos.html">Explorar Destinos</a> <i class="bi bi-map"></i></li>
+            <li><a href="dicas_viagem.html">Dicas de Viagem</a> <i class="bi bi-lightbulb"></i></li>
+            <li><a href="sos.html">Ligar Emergência Local</a> <i class="bi bi-telephone"></i></li>
+            <li><a href="faq.html">Suporte/FAQ</a> <i class="bi bi-question-circle"></i></li>
+            <li><a href="index.html">Sair</a> <i class="bi bi-box-arrow-right"></i></li>
+        </ul>
+    </div>
+    <div class="content">
+        <h1>Números de Emergência <i class="bi bi-incognito"></i></h1>
+        <div class="emergency">
+            <h3>Hospital:</h3>
+            <a href="tel:+550123456789">+55 01 2345-6789</a>
+        </div>
+        <div class="emergency">
+            <h3>Polícia:</h3>
+            <a href="tel:+550123456789">+55 01 2345-6789</a>
+        </div>
+        <div class="emergency">
+            <h3>Ambulância:</h3>
+            <a href="tel:+550123456789">+55 01 2345-6789</a>
+        </div>
+        <div class="emergency">
+            <h3>Embaixada:</h3>
+            <a href="tel:+550123456789">+55 01 2345-6789</a>
+        </div>
+        <div class="emergency">
+            <h3>Departamento de Trânsito:</h3>
+            <a href="tel:+550123456789">+55 01 2345-6789</a>
+        </div>
+    </div>
+</body>
+</html>
