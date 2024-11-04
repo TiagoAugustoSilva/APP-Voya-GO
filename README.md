@@ -45,6 +45,14 @@ Este projeto foi desenvolvido utilizando as seguintes tecnologias:
 │   ├── dashboard.html
 │   ├── expl
 
-![ALT Text](img/tela-sunplace-1.png)
+![ALT Text](img/Login.png)
+![ALT Text](img/criar-conta.png)
+![ALT Text](img/dashboard.png)
+![ALT Text](img/explorar.png)
+![ALT Text](img/dicas.png)
+![ALT Text](img/powerbi.png)
+![ALT Text](img/sos.png)
+![ALT Text](img/faq.png)
+![ALT Text](img/config.png)
 
 
