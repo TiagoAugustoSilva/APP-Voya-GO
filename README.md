@@ -40,21 +40,5 @@ Este projeto foi desenvolvido utilizando as seguintes tecnologias:
 ![ALT Text](img/config.png)
 
 
-## 📂 Estrutura do Projeto
-
-```bash
-.
-├── public
-│   ├── css
-│   │   └── dashboard.css
-│   ├── js
-│   │   ├── main.js
-│   │   └── translations.js
-│   └── images
-├── views
-│   ├── index.html
-│   ├── dashboard.html
-│   ├── expl
-
 
 
