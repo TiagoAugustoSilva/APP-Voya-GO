@@ -10,6 +10,7 @@ Este projeto foi desenvolvido utilizando as seguintes tecnologias:
 - **CSS3**: Estilização e design responsivo.
 - **JavaScript**: Interatividade e manipulação dinâmica de elementos.
 - **Node.js**: Backend e integração com o banco de dados.
+- **MySQL**: o banco de dados.
 
 ## 🚀 Funcionalidades
 
