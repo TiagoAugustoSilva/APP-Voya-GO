@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style-global.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <script src="translations.js" defer></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        /* Estilo para o mapa */
+        #map {
+            height: 500px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        /* Estilos para a barra de pesquisa */
+        #search-container {
+            margin-top: 20px;
+        }
+
+        #search-input {
+            padding: 10px;
+            width: 80%;
+            font-size: 14px;
+        }
+
+        #search-button,
+        #voice-button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            color: white;
+        }
+
+        #search-button {
+            background-image: linear-gradient(#1c021d, #730b77, #260727);
+        }
+
+        #voice-button {
+            background-image: linear-gradient(#c02438, #a12a2a, #c51616);
+            font-size: 15px;
+        }
+
+        /* Estilo para a lista de destinos famosos */
+        #famous-destinations {
+            margin-top: 20px;
+        }
+
+        #famous-destinations ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #famous-destinations li {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+
+        /* Estilo para exibir a distância e tempo */
+        #distance-info {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body onload="loadLanguage()">
+    <div class="sidebar">
+        <img src="img/logo-Bag.png" alt="Logo">
+        <ul>
+            <li><a href="dashboard.html" id="travel-gps">Viajar GPS</a> <i class="bi bi-geo-alt"></i></li>
+            <li><a href="explorar_destinos.html" id="explore-destinations">Explorar Destinos</a> <i
+                    class="bi bi-map"></i></li>
+            <li><a href="dicas_viagem.html" id="travel-tips">Dicas de Viagem</a> <i class="bi bi-lightbulb"></i></li>
+            <li><a href="estatisticas.html" id="travel-tips">Estatísticas de Viagens</a> <i class="bi bi-bar-chart-line"></i>
+            </li>
+            <li><a href="sos.html" id="emergency">Ligar Emergência SOS</a> <i class="bi bi-telephone"></i></li>
+            <li><a href="faq.html" id="support">Suporte/FAQ</a> <i class="bi bi-question-circle"></i></li>
+            <li><a href="config.html" id="account-settings">Configurações de conta</a> <i class="bi bi-gear"></i></li>
+            <li><a href="index.html" id="logout">Sair</a> <i class="bi bi-box-arrow-right"></i></li>
+        </ul>
+    </div>
+    <div class="content">
+        <h1 id="welcome-message">Bem-vindo ao seu guia turístico virtual</h1>
+        <p id="message">Para onde gostaria de ir?</p>
+
+        <!-- Barra de Pesquisa -->
+        <div id="search-container">
+            <input type="text" id="search-input" placeholder="Digite um destino...">
+            <button id="search-button" onclick="buscarLocal()">Buscar</button>
+            <button id="voice-button" onclick="iniciarReconhecimentoVoz()">
+                <i class="bi bi-mic-fill"></i>
+            </button>
+        </div>
+
+        <div id="resultado"></div> <!-- Para exibir os resultados da busca -->
+        <div id="map"></div> <!-- Elemento para o mapa -->
+        <div id="distance-info"></div> <!-- Para exibir distância e tempo -->
+        <script>
+            let userLocation = null;
+
+            // Inicializa o mapa
+            const map = L.map('map').setView([-23.5505, -46.6333], 2); // Ponto inicial do mapa
+
+            // Adiciona uma camada de tiles do OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+
+            // Função para obter a localização do usuário
+            function obterLocalizacao() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition((position) => {
+                        userLocation = {
+                            lat: position.coords.latitude,
+                            lon: position.coords.longitude
+                        };
+                        map.setView([userLocation.lat, userLocation.lon], 13);
+                        L.marker([userLocation.lat, userLocation.lon]).addTo(map).bindPopup('Sua localização atual').openPopup();
+                    }, () => {
+                        alert('Erro ao obter a localização. Ative a geolocalização.');
+                    });
+                } else {
+                    alert('Geolocalização não é suportada neste navegador.');
+                }
+            }
+
+            // Função para centralizar o mapa em um destino específico e calcular a distância
+            function centralizarMapa(lat, lon, nomeDestino) {
+                if (!userLocation) {
+                    alert('Localização do usuário não disponível. Por favor, aguarde.');
+                    return;
+                }
+
+                map.setView([lat, lon], 13);
+                const marker = L.marker([lat, lon]).addTo(map);
+                marker.bindPopup(nomeDestino).openPopup();
+
+                // Calcular distância
+                const distancia = map.distance([userLocation.lat, userLocation.lon], [lat, lon]);
+                const tempoEstimado = calcularTempo(distancia);
+
+                // Exibir distância e tempo
+                const distanceInfo = document.getElementById('distance-info');
+                distanceInfo.innerHTML = `Distância: ${(distancia / 1000).toFixed(2)} km<br>Tempo estimado: ${tempoEstimado}`;
+            }
+
+            // Função para calcular tempo estimado de viagem (em minutos)
+            function calcularTempo(distancia) {
+                const velocidadeMediaCarro = 60; // km/h
+                const velocidadeMediaAviao = 850; // km/h
+
+                // Cálculo do tempo para carro
+                const tempoCarro = distancia / (velocidadeMediaCarro * 1000); // Tempo em horas
+                const diasCarro = Math.floor(tempoCarro / 24);
+                const horasCarro = Math.floor(tempoCarro % 24);
+                const minutosCarro = Math.round((tempoCarro - Math.floor(tempoCarro)) * 60);
+
+                // Cálculo do tempo para avião
+                const tempoAviao = distancia / (velocidadeMediaAviao * 1000); // Tempo em horas
+                const diasAviao = Math.floor(tempoAviao / 24);
+                const horasAviao = Math.floor(tempoAviao % 24);
+                const minutosAviao = Math.round((tempoAviao - Math.floor(tempoAviao)) * 60);
+
+                // Formatação dos resultados
+                const resultadoCarro = `${diasCarro > 0 ? `${diasCarro} dia${diasCarro > 1 ? 's' : ''}, ` : ''}${horasCarro} hora${horasCarro !== 1 ? 's' : ''} e ${minutosCarro} minuto${minutosCarro !== 1 ? 's' : ''}`;
+                const resultadoAviao = `${diasAviao > 0 ? `${diasAviao} dia${diasAviao > 1 ? 's' : ''}, ` : ''}${horasAviao} hora${horasAviao !== 1 ? 's' : ''} e ${minutosAviao} minuto${minutosAviao !== 1 ? 's' : ''}`;
+
+                return { resultadoCarro, resultadoAviao };
+            }
+
+            // Função para centralizar o mapa em um destino específico e calcular a distância
+            function centralizarMapa(lat, lon, nomeDestino) {
+                if (!userLocation) {
+                    alert('Localização do usuário não disponível. Por favor, aguarde.');
+                    return;
+                }
+
+                map.setView([lat, lon], 13);
+                const marker = L.marker([lat, lon]).addTo(map);
+                marker.bindPopup(nomeDestino).openPopup();
+
+                // Calcular distância
+                const distancia = map.distance([userLocation.lat, userLocation.lon], [lat, lon]);
+
+                // Calcular tempo
+                const { resultadoCarro, resultadoAviao } = calcularTempo(distancia);
+
+                // Exibir distância e tempo
+                const distanceInfo = document.getElementById('distance-info');
+                distanceInfo.innerHTML = `Distância: ${(distancia / 1000).toFixed(2)} km<br>
+                               Tempo estimado de carro: ${resultadoCarro}<br>
+                               Tempo estimado de avião: ${resultadoAviao}`;
+            }
+
+            // Função para buscar local
+            async function buscarLocal() {
+                const local = document.getElementById('search-input').value; // Obtém o valor do campo de busca
+                if (!local) {
+                    alert('Por favor, digite um destino para buscar.');
+                    return;
+                }
+
+                const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(local)}&format=json&addressdetails=1&limit=1`;
+
+                try {
+                    const resposta = await fetch(url);
+                    if (!resposta.ok) {
+                        throw new Error(`HTTP error! status: ${resposta.status}`);
+                    }
+                    const dados = await resposta.json();
+
+                    const resultadoDiv = document.getElementById('resultado');
+                    resultadoDiv.innerHTML = ''; // Limpa resultados anteriores
+
+                    // Remove marcadores existentes
+                    map.eachLayer((layer) => {
+                        if (layer instanceof L.Marker) {
+                            map.removeLayer(layer);
+                        }
+                    });
+
+                    if (dados.length > 0) {
+                        const { lat, lon, display_name } = dados[0];
+                        centralizarMapa(lat, lon, display_name);
+                    } else {
+                        resultadoDiv.innerHTML = 'Nenhum resultado encontrado.';
+                    }
+                } catch (error) {
+                    console.error('Erro ao buscar local:', error);
+                }
+            }
+
+            // Função para iniciar reconhecimento de voz
+            function iniciarReconhecimentoVoz() {
+                const reconhecimento = new webkitSpeechRecognition(); // A API de reconhecimento de voz
+                reconhecimento.lang = 'pt-BR';
+                reconhecimento.interimResults = false;
+
+                reconhecimento.onresult = (event) => {
+                    const resultado = event.results[0][0].transcript;
+                    document.getElementById('search-input').value = resultado; // Coloca o resultado na barra de pesquisa
+                    buscarLocal(); // Executa a busca
+                };
+
+                reconhecimento.start();
+            }
+
+            // Chama a função para obter a localização do usuário ao carregar a página
+            obterLocalizacao();
+        </script>
+
+
+    </div>
+</body>
+
+</html>

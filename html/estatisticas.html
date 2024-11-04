@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Explorar Destinos</title>
+    <link rel="stylesheet" href="style-global.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        /* Estilo básico */
+        body {
+            display: flex;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-image: linear-gradient(#1c021d, #730b77, #260727);
+            color: white;
+            padding: 20px;
+            height: 100%;
+        }
+
+        .sidebar h2 {
+            margin-top: 0;
+        }
+
+        .content {
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        /* Estilos para os pontos turísticos */
+        #tourist-places {
+            margin-top: 20px;
+        }
+
+        .place {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .place:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Estilos para a paginação */
+        .pagination {
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #730b77;
+            color: white;
+            cursor: pointer;
+        }
+
+        .pagination button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Estilo para reduzir a imagem */
+        .small-image {
+            width: 100%; /* Ajuste o tamanho conforme necessário */
+            height: auto; /* Mantém a proporção da imagem */
+        }
+
+        /* Estilo para o texto descritivo */
+        .description {
+            margin-top: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="sidebar">
+        <img src="img/logo-Bag.png" alt="">
+        <ul>
+            <li><a href="dashboard.html" id="travel-gps">Viajar GPS</a> <i class="bi bi-geo-alt"></i></li>
+            <li><a href="explorar_destinos.html" id="explore-destinations">Explorar Destinos</a> <i
+                    class="bi bi-map"></i></li>
+            <li><a href="dicas_viagem.html" id="travel-tips">Dicas de Viagem</a> <i class="bi bi-lightbulb"></i></li>
+            <li><a href="estatisticas.html" id="travel-tips">Estatísticas de Viagens</a> <i class="bi bi-bar-chart-line"></i>
+            </li>
+            <li><a href="sos.html" id="emergency">Ligar Emergência SOS</a> <i class="bi bi-telephone"></i></li>
+            <li><a href="faq.html" id="support">Suporte/FAQ</a> <i class="bi bi-question-circle"></i></li>
+            <li><a href="config.html" id="account-settings">Configurações de conta</a> <i class="bi bi-gear"></i></li>
+            <li><a href="index.html" id="logout">Sair</a> <i class="bi bi-box-arrow-right"></i></li>
+        </ul>
+    </div>
+    <div class="content">
+        <h1>Estatísticas de Viagens - Pontos Turísticos Mais Visitados</h1>
+        
+        <img src="img/dash_upx.jpg" alt="" class="small-image">
+        <div id="tourist-places"></div> <!-- Onde os pontos turísticos serão exibidos -->
+        <img src="img/top-destinos-grafico.png" alt="" class="small-image">
+        
+        <!-- Texto descritivo sobre estatísticas dos pontos turísticos mais visitados -->
+        <div class="description">
+            <p>Os pontos turísticos mais visitados do mundo atraem milhões de pessoas anualmente, fascinadas por suas
+               histórias, arquiteturas e significados culturais. Lugares icônicos, como a Torre Eiffel em Paris, o
+               Coliseu em Roma, e a Estátua da Liberdade em Nova York, estão entre os destinos favoritos. As
+               estatísticas mostram que esses locais não apenas representam marcos históricos e culturais, mas também
+               contribuem significativamente para as economias locais devido ao turismo.</p>
+            
+            <p>Cada ano, novos recordes de visitação são estabelecidos, impulsionados por fatores como o crescimento
+               das viagens internacionais e o desejo de explorar culturas diversas. Estes destinos são projetados para
+               receber milhões de turistas e proporcionar experiências inesquecíveis. O gráfico acima ilustra alguns dos
+               pontos turísticos mais populares, refletindo a diversidade e o apelo global que eles têm.</p>
+        </div>
+
+        <div class="pagination">
+            <button id="prev-btn" onclick="navegarPagina(-1)" disabled>Anterior</button>
+            <span id="page-info"></span>
+            <button id="next-btn" onclick="navegarPagina(1)">Próximo</button>
+        </div>
+    </div>
+</body>
+
+</html>

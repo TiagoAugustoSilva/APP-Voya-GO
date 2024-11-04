@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Configurações de Conta</title>
+    <link rel="stylesheet" href="style-global.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            display: flex;
+            margin: 0;
+            height: 100vh; /* Altura total da tela */
+            overflow: hidden; /* Remove a rolagem */
+        }
+        .sidebar {
+            width: 250px;
+            background-image: linear-gradient(#1c021d, #730b77, #260727);
+            color: white;
+            padding: 20px;
+            height: 100%; /* Altura total da barra lateral */
+        }
+        .content {
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto; /* Permite rolagem no conteúdo */
+        }
+        h1 {
+            margin-top: 0;
+        }
+        .option {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .option h3 {
+            margin: 0;
+        }
+        .option a {
+            color: #d9534f;
+            text-decoration: none;
+        }
+        .option a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <img src="img/logo-Bag.png" alt="Logo do Voya-Go" aria-label="Logo do Voya-Go">
+        <ul>
+            <li><a id="menu-gps" href="dashboard.html">Viajar GPS</a> <i class="bi bi-geo-alt"></i></li>
+            <li><a id="menu-explorar" href="explorar_destinos.html">Explorar Destinos</a> <i class="bi bi-map"></i></li>
+            <li><a id="menu-dicas" href="dicas_viagem.html">Dicas de Viagem</a> <i class="bi bi-lightbulb"></i></li>
+            <li><a id="menu-sos" href="sos.html">Ligar Emergência Local</a> <i class="bi bi-telephone"></i></li>
+            <li><a id="menu-faq" href="faq.html">Suporte/FAQ</a> <i class="bi bi-question-circle"></i></li>
+            <li><a id="menu-config" href="config.html">Configurações de Conta</a> <i class="bi bi-gear"></i></li>
+            <li><a id="menu-sair" href="index.html">Sair</a> <i class="bi bi-box-arrow-right"></i></li>
+        </ul>
+    </div>
+    <div class="content">
+        <h1 id="config-title">Configurações de Conta</h1>
+        
+        <!-- Seção de Troca de Idioma -->
+        <div class="option">
+            <h3 id="language-title">Idioma</h3>
+            <select id="language-select" onchange="changeLanguage()" aria-label="Selecionar idioma">
+                <option value="pt">Português</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="de">Deutsch</option>
+                <option value="ja">日本語</option>
+            </select>
+        </div>
+        
+        <!-- Opções de Configuração -->
+        <div class="option">
+            <h3 id="deactivate-title">Desativar Conta</h3>
+            <p id="deactivate-description">Desativar sua conta por 30 dias.</p>
+            <a href="index.html" onclick="desativarConta()" aria-label="Desativar conta" id="deactivate-link">Desativar</a>
+        </div>
+        <div class="option">
+            <h3 id="delete-title">Excluir Conta</h3>
+            <p id="delete-description">Excluir sua conta permanentemente.</p>
+            <a href="index.html" onclick="excluirConta()" aria-label="Excluir conta" id="delete-link">Excluir Agora</a>
+        </div>
+    </div>
+
+    <script>
+        // Dicionário com as traduções
+        const translations = {
+            en: {
+                configTitle: "Account Settings",
+                languageTitle: "Language",
+                deactivateTitle: "Deactivate Account",
+                deactivateDescription: "Deactivate your account for 30 days.",
+                deactivateLink: "Deactivate",
+                deleteTitle: "Delete Account",
+                deleteDescription: "Delete your account permanently.",
+                deleteLink: "Delete Now",
+                menu: {
+                    gps: "Travel GPS",
+                    explorar: "Explore Destinations",
+                    dicas: "Travel Tips",
+                    sos: "Emergency Call",
+                    faq: "Support/FAQ",
+                    config: "Account Settings",
+                    sair: "Log Out"
+                }
+            },
+            pt: {
+                configTitle: "Configurações de Conta",
+                languageTitle: "Idioma",
+                deactivateTitle: "Desativar Conta",
+                deactivateDescription: "Desativar sua conta por 30 dias.",
+                deactivateLink: "Desativar",
+                deleteTitle: "Excluir Conta",
+                deleteDescription: "Excluir sua conta permanentemente.",
+                deleteLink: "Excluir Agora",
+                menu: {
+                    gps: "Viajar GPS",
+                    explorar: "Explorar Destinos",
+                    dicas: "Dicas de Viagem",
+                    sos: "Ligar Emergência Local",
+                    faq: "Suporte/FAQ",
+                    config: "Configurações de Conta",
+                    sair: "Sair"
+                }
+            },
+            es: {
+                configTitle: "Configuración de la Cuenta",
+                languageTitle: "Idioma",
+                deactivateTitle: "Desactivar Cuenta",
+                deactivateDescription: "Desactiva tu cuenta por 30 días.",
+                deactivateLink: "Desactivar",
+                deleteTitle: "Eliminar Cuenta",
+                deleteDescription: "Elimina tu cuenta permanentemente.",
+                deleteLink: "Eliminar Ahora",
+                menu: {
+                    gps: "Viajar GPS",
+                    explorar: "Explorar Destinos",
+                    dicas: "Consejos de Viaje",
+                    sos: "Llamada de Emergencia",
+                    faq: "Soporte/FAQ",
+                    config: "Configuración de la Cuenta",
+                    sair: "Salir"
+                }
+            },
+            de: {
+                configTitle: "Kontoeinstellungen",
+                languageTitle: "Sprache",
+                deactivateTitle: "Konto Deaktivieren",
+                deactivateDescription: "Deaktivieren Sie Ihr Konto für 30 Tage.",
+                deactivateLink: "Deaktivieren",
+                deleteTitle: "Konto Löschen",
+                deleteDescription: "Löschen Sie Ihr Konto dauerhaft.",
+                deleteLink: "Jetzt Löschen",
+                menu: {
+                    gps: "Reise GPS",
+                    explorar: "Ziele Erkunden",
+                    dicas: "Reisetipps",
+                    sos: "Notruf",
+                    faq: "Support/FAQ",
+                    config: "Kontoeinstellungen",
+                    sair: "Abmelden"
+                }
+            },
+            ja: {
+                configTitle: "アカウント設定",
+                languageTitle: "言語",
+                deactivateTitle: "アカウントを無効にする",
+                deactivateDescription: "アカウントを30日間無効にします。",
+                deactivateLink: "無効にする",
+                deleteTitle: "アカウントを削除",
+                deleteDescription: "アカウントを永久に削除します。",
+                deleteLink: "今すぐ削除",
+                menu: {
+                    gps: "旅行GPS",
+                    explorar: "目的地を探る",
+                    dicas: "旅行のヒント",
+                    sos: "緊急電話",
+                    faq: "サポート/FAQ",
+                    config: "アカウント設定",
+                    sair: "ログアウト"
+                }
+            }
+        };
+
+        // Função para trocar o idioma
+        function changeLanguage() {
+            const selectedLanguage = document.getElementById("language-select").value;
+            localStorage.setItem("language", selectedLanguage);
+            applyTranslations(selectedLanguage);
+        }
+
+        // Função para aplicar as traduções
+        function applyTranslations(lang) {
+            const t = translations[lang];
+            document.getElementById("config-title").textContent = t.configTitle;
+            document.getElementById("language-title").textContent = t.languageTitle;
+            document.getElementById("deactivate-title").textContent = t.deactivateTitle;
+            document.getElementById("deactivate-description").textContent = t.deactivateDescription;
+            document.getElementById("deactivate-link").textContent = t.deactivateLink;
+            document.getElementById("delete-title").textContent = t.deleteTitle;
+            document.getElementById("delete-description").textContent = t.deleteDescription;
+            document.getElementById("delete-link").textContent = t.deleteLink;
+
+            // Atualizando o menu
+            document.getElementById("menu-gps").textContent = t.menu.gps;
+            document.getElementById("menu-explorar").textContent = t.menu.explorar;
+            document.getElementById("menu-dicas").textContent = t.menu.dicas;
+            document.getElementById("menu-sos").textContent = t.menu.sos;
+            document.getElementById("menu-faq").textContent = t.menu.faq;
+            document.getElementById("menu-config").textContent = t.menu.config;
+            document.getElementById("menu-sair").textContent = t.menu.sair;
+        }
+
+        // Carregar o idioma armazenado no Local Storage
+        window.onload = () => {
+            const savedLanguage = localStorage.getItem("language") || "pt";
+            document.getElementById("language-select").value = savedLanguage;
+            applyTranslations(savedLanguage);
+        };
+
+        function desativarConta() {
+            // Lógica para desativar a conta
+            alert("Conta desativada por 30 dias.");
+        }
+
+        function excluirConta() {
+            // Lógica para excluir a conta
+            alert("Conta excluída permanentemente.");
+        }
+    </script>
+</body>
+</html>
